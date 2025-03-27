@@ -11,7 +11,7 @@ import connectDB from './src/db/index.js';
 connectDB();
 
 
-
+// PORT
 const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
     console.log(`Server running at:`, PORT)
