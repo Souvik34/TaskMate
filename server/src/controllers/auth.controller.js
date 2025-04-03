@@ -97,3 +97,25 @@ export const signin = async(req, res, next)=>{
     }
 
 }
+
+export const signout = (req, res, next) => {
+    try {
+        if (!req.cookies.refresh_token) {  
+            return next(errorHandler(401, "Signout failed: User not logged in"));
+        }
+
+        res.clearCookie("refresh_token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Signout successful!",
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};

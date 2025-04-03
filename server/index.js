@@ -5,6 +5,10 @@ dotenv.config({
     path:'./.env'
 });
 
+import cookieParser from "cookie-parser";
+
+app.use(cookieParser());
+
 
 // Database connection
 import connectDB from './src/db/index.js';
