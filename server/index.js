@@ -29,6 +29,9 @@ import authRouter from './src/routes/auth.route.js';
 app.use("/api/v1/auth", authRouter)
 
 
+import todoRouter from './src/routes/todo.route.js';
+app.use("/api/v1/todo", todoRouter)
+
 
 
 //error handling
