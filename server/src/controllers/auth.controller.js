@@ -18,15 +18,14 @@ export const signup= async(req, res, next)=>{
             return next(errorHandler(400, "User already exists"))
         }
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password,10);
+      
 
         // Create new user
 
         const newUser= await User.create({
             username,
             email,
-            password : hashedPassword
+            password
 
         })
         // Send response
@@ -61,13 +60,36 @@ const signin = async(req, res, next)=>{
         }
         // Check password
 
-        const validPassword = await bcryptjs.compare(password, validUser.password);
+        const validPassword = await comparePassword(password);
 
         if(!validPassword)
         {
             return next(errorHandler(400, "Invalid credentials"))
         }
 
+        // Generate tokens
+        const accessToken = validUser.generateAccessToken();
+        const refreshToken = validUser.generateRefreshToken();
+
+        // Store refresh token in HttpOnly cookie
+        res.cookie("refresh_token", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+
+        });
+
+        // Send response with tokens
+        res.status(200).json({
+            success: true,
+            message: "Signin successful!",
+            accessToken,
+            user: {
+                id: validUser._id,
+                username: validUser.username,
+                email: validUser.email,
+            },
+        });
       
     } catch (error) {
         next(error)
