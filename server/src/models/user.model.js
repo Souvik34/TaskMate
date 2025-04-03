@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";  
+import jwt from "jsonwebtoken"; 
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -49,7 +52,7 @@ userSchema.methods.generateRefreshToken = function() {
         }, 
         process.env.REFRESH_TOKEN_SECRET, 
         { 
-            expiresIn: process.env.ACCESS_REFRESH_EXPIRY 
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY 
         });
 }
 
