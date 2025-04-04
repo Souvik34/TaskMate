@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { signinSchema } from "../schemas/validationSchema";
@@ -9,7 +10,6 @@ import { zodToFormik } from "../utils/zodToFormik";
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -31,22 +31,44 @@ const Signin = () => {
           }
         );
 
-        console.log("🔹 Login Response:", response.data);
-
         const token = response.data.token || response.data.accessToken;
         if (!token) {
           throw new Error("No token received from API");
         }
 
         localStorage.setItem("token", token);
-        navigate("/dashboard/home");
+
+        let timerInterval;
+        Swal.fire({
+          title: "Login Successful!",
+          html: "Redirecting in <b>3</b> seconds...",
+          timer: 3000,
+          icon: "success",
+          timerProgressBar: true,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            const b = Swal.getHtmlContainer().querySelector("b");
+            let remaining = 3;
+            timerInterval = setInterval(() => {
+              remaining -= 1;
+              if (b) b.textContent = remaining.toString();
+            }, 1000);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+            navigate("/dashboard/home");
+          },
+        });
       } catch (err) {
         console.error("🚨 Login Error:", err);
-        setError(
-          err.response?.data?.message ||
-          err.message ||
-          "Something went wrong. Please try again."
-        );
+
+        Swal.fire({
+          title: "Login Failed",
+          text: err.response?.data?.message || err.message || "Something went wrong.",
+          icon: "error",
+          confirmButtonColor: "#d33",
+        });
       }
     },
   });
@@ -76,7 +98,7 @@ const Signin = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-10 flex items-center cursor-pointer text-gray-600"
           >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
           </div>
         )}
         {formik.touched[name] && formik.errors[name] && (
@@ -100,8 +122,6 @@ const Signin = () => {
           <h1 className="text-3xl font-bold text-blue-700 text-center">
             Sign in to TaskMate
           </h1>
-
-          {error && <p className="text-red-600 text-center font-semibold">{error}</p>}
 
           {renderInput("email", "email", "Email")}
           {renderInput("password", "password", "Password")}
