@@ -1,49 +1,51 @@
 import React, { useEffect, useState } from "react";
-import Badge from "../components/Badge";
-import { Link } from "react-router-dom";
-import Task from "../components/Todo";
+import axios from "axios";
 import { showToast } from "../helper/showToast";
+import Todo from "../components/Todo"; 
+
 const TodoList = () => {
-    const [referesh, setReferesh] = useState(false)
-    const [tasks, setTasks] = useState()
-    useEffect(() => {
-        setReferesh(false)
-        const getTask = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/task/get-all-task`)
-            const responseData = await response.json()
-            setTasks(responseData)
-        }
-        getTask()
-    }, [referesh])
+  const [todos, setTodos] = useState([]); 
+  const [loading, setLoading] = useState(true); 
 
-    const deleteTask = async (taskid) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/task/delete-task/${taskid}`, {
-                method: 'DELETE'
-            })
-            const responseData = await response.json()
-            if (!response.ok) {
-                throw new Error(responseData.message)
-            }
-            setReferesh(true)
-            showToast('success', responseData.message)
-        } catch (error) {
-            showToast('error', error.message)
-        }
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/todo/get-all`, {
+        withCredentials: true,
+      });
+      setTodos(response.data.todoData || []);
+    } catch (error) {
+      showToast("error", error.response?.data?.message || "Failed to fetch todos");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <div className="pt-5">
-            <h1 className="text-2xl font-bold mb-5">My Tasks</h1>
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
-            {tasks && tasks.status ?
-                tasks.taskData.length > 0 ? tasks.taskData.map((task) => <Task key={task._id} props={task} onDelete={deleteTask} />) : <>0 Task.</>
-                :
-                <>Loading...</>
-            }
+  const deleteTodo = async (todoId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/todo/delete/${todoId}`, {
+        withCredentials: true,
+      });
+      showToast("success", "Todo deleted successfully!");
+      setTodos((prev) => prev.filter((todo) => todo._id !== todoId)); 
+    } catch (error) {
+      showToast("error", error.response?.data?.message || "Failed to delete todo");
+    }
+  };
 
-        </div>
-    );
+  return (
+    <div className="pt-5">
+      <h1 className="text-2xl font-bold mb-5">My Todos</h1>
+      {loading ? <p>Loading...</p> : todos.length > 0 ? (
+        todos.map((todo) => <Todo key={todo._id} props={todo} onDelete={deleteTodo} />)
+      ) : (
+        <p>No Todos Available.</p>
+      )}
+    </div>
+  );
 };
 
 export default TodoList;

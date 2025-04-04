@@ -1,10 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
-import React, { useState } from "react";
 import { z, ZodError } from "zod";
 import { getZodError } from "../helper/getZodError";
 import { showToast } from "../helper/showToast";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ title: "", description: "" });
   const [err, setError] = useState();
 
@@ -21,28 +23,30 @@ const HomePage = () => {
     e.preventDefault();
     try {
       const validatedData = todoSchema.parse(formData);
-      const token = localStorage.getItem("token"); // Ensure token is sent
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        showToast("error", "You are not logged in. Please sign in first.");
+        return;
+      }
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/todo/create`,
         validatedData,
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-          withCredentials: true
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+          withCredentials: true,
         }
       );
 
       setFormData({ title: "", description: "" });
       showToast("success", response.data.message);
+      navigate("/dashboard/todo-list"); // ✅ Navigate to My Todos after adding
     } catch (error) {
       if (error instanceof ZodError) {
         setError(getZodError(error.errors));
       } else {
-        const errorMessage = error.response?.data?.message || "Something went wrong";
-        showToast("error", errorMessage);
+        showToast("error", error.response?.data?.message || "Something went wrong");
       }
     }
   };
