@@ -25,20 +25,21 @@ With a clean and intuitive user interface, TaskMate lets you keep track of your 
 
 ## 🔧 Tech Stack
 
-**Frontend:**
-- React
-- React Router DOM
-- Axios
-- Formik + Zod for validation
-- Tailwind CSS
-- React Toastify
+**🖥️ Frontend:**
+- ⚛️ React  
+- 🧭 React Router DOM  
+- 📡 Axios  
+- 📝 Formik + 🔎 Zod for validation  
+- 💨 Tailwind CSS  
+- 🔔 React Toastify  
 
-**Backend:**
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- JWT for authentication
-- Bcrypt for password hashing
+**🛠️ Backend:**
+- 🟢 Node.js  
+- 🚂 Express.js  
+- 🍃 MongoDB (Mongoose)  
+- 🛡️ JWT for authentication  
+- 🔐 Bcrypt for password hashing  
+
 
 ---
 
