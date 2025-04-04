@@ -53,7 +53,7 @@ const Signup = () => {
           },
           willClose: () => {
             clearInterval(timerInterval);
-            navigate("/"); // 👈 Redirect after close
+            navigate("/"); 
           },
         });
     
@@ -63,7 +63,7 @@ const Signup = () => {
         Swal.fire({
           title: "Signup Failed",
           text: error.response?.data?.message || "Something went wrong.",
-          icon: "error", // ❌ red cross
+          icon: "error", 
           confirmButtonColor: "#d33",
         });
     

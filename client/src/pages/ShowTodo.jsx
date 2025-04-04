@@ -25,7 +25,7 @@ const ShowTodo = () => {
     const getTodo = async () => {
       try {
         const { data } = await axios.get(`/todo/show/${todoId}`);
-        console.log("📦 Full Todo API Response:", data);
+        console.log(" Full Todo API Response:", data);
         setApiData(data);
         setFormData(data.todo);
       } catch (error) {
@@ -44,7 +44,7 @@ const ShowTodo = () => {
     e.preventDefault();
     setError(null);
 
-    // 🚫 Prevent updating if the status is unchanged
+    // Prevent updating if the status is unchanged
     if (
       apiData?.todo?.status === formData.status &&
       apiData?.todo?.title === formData.title &&

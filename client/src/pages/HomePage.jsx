@@ -1,20 +1,18 @@
-/* eslint-disable no-unused-vars */
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { z, ZodError } from "zod";
+import {  ZodError } from "zod";
 import { getZodError } from "../helper/getZodError";
 import { showToast } from "../helper/showToast";
+import { todoSchema } from "../schemas/validationSchema";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ title: "", description: "" });
   const [err, setError] = useState();
 
-  const todoSchema = z.object({
-    title: z.string().min(3, { message: "Title must be at least 3 characters long." }),
-    description: z.string().min(3, { message: "Description must be at least 3 characters long." }).max(500, { message: "Length exceeded." }),
-  });
+  
 
   const handleInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +23,7 @@ const HomePage = () => {
       const validatedData = todoSchema.parse(formData);
   
       const token = localStorage.getItem("token");
-      console.log("🔹 Token from localStorage:", token); // Debugging step
+      console.log("🔹 Token from localStorage:", token); 
       if (!token) {
         showToast("error", "You are not logged in. Please sign in first.");
         return;
@@ -49,8 +47,8 @@ const HomePage = () => {
   
       if (error.response?.status === 403) {
         showToast("error", "Session expired. Please login again.");
-        localStorage.removeItem("token"); // Clear invalid token
-        navigate("/"); // Use `navigate` instead of `window.location.href`
+        localStorage.removeItem("token"); 
+        navigate("/"); 
       } else if (error instanceof ZodError) {
         setError(getZodError(error.errors));
       } else {

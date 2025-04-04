@@ -61,7 +61,7 @@ const Signin = () => {
           },
         });
       } catch (err) {
-        console.error("🚨 Login Error:", err);
+        console.error(" Login Error:", err);
 
         Swal.fire({
           title: "Login Failed",

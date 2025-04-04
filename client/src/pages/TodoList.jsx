@@ -16,7 +16,7 @@ const TodoList = () => {
         return;
       }
 
-      console.log("🔑 Token from localStorage:", token);
+      console.log(" Token from localStorage:", token);
 
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/todo/get`,
@@ -25,17 +25,17 @@ const TodoList = () => {
         }
       );
 
-      console.log("✅ Todos fetched:", response.data);
+      console.log("Todos fetched:", response.data);
       setTodos(response.data.todos);
     } catch (error) {
-      console.error("❌ Failed to fetch todos:", error);
+      console.error(" Failed to fetch todos:", error);
 
       showToast(
         "error",
         error.response?.data?.message || "Failed to fetch todos"
       );
     } finally {
-      setLoading(false); // Ensure loading is set to false
+      setLoading(false); 
     }
   };
 
@@ -58,11 +58,11 @@ const TodoList = () => {
       showToast("success", "Todo deleted successfully!");
       setTodos((prev) => prev.filter((todo) => todo._id !== todoId));
     } catch (error) {
-      console.error("❌ Failed to delete todo:", error);
+      console.error("Failed to delete todo:", error);
 
       showToast(
         "error",
-        error.response?.data?.message || "Failed to delete todo"
+        error.response?.data?.message || "Failed to delete todo!"
       );
     }
   };
