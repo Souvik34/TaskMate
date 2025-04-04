@@ -8,26 +8,26 @@ import { todoSchema } from "../schemas/validationSchema";
 
 const ShowTodo = () => {
   const { todoId } = useParams();
-  const [apiData, setApiData] = useState();
+  const [apiData, setApiData] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    status: "Pending",
+    status: "Pending", // ✅ Use correct case
   });
-  const [err, setError] = useState();
+  const [err, setError] = useState(null);
 
   const token = localStorage.getItem("token");
 
-  // Set default Axios headers
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   useEffect(() => {
     const getTodo = async () => {
       try {
-        const { data } = await axios.get(`/Todo/show/${todoId}`);
+        const { data } = await axios.get(`/todo/show/${todoId}`);
+        console.log("📦 Full Todo API Response:", data);
         setApiData(data);
-        setFormData(data.TodoData);
+        setFormData(data.todo); // backend must return: { todo: {title, desc, status} }
       } catch (error) {
         showToast("error", error.response?.data?.message || "Failed to fetch todo");
       }
@@ -44,8 +44,7 @@ const ShowTodo = () => {
     e.preventDefault();
     try {
       const validatedData = todoSchema.parse(formData);
-      const { data } = await axios.put(`/Todo/update/${todoId}`, validatedData);
-
+      const { data } = await axios.put(`/todo/update/${todoId}`, validatedData);
       showToast("success", data.message);
     } catch (error) {
       if (error instanceof ZodError) {
@@ -59,13 +58,13 @@ const ShowTodo = () => {
   return (
     <div className="pt-5">
       <h1 className="text-2xl font-bold mb-5">Todo Details</h1>
-      {apiData && apiData.status ? (
+      {apiData?.todo ? (
         <form onSubmit={handleSubmit}>
           {/* Title */}
           <div className="mb-5">
             <label className="block mb-2 text-sm font-medium text-gray-900">Title</label>
             <input
-              value={formData?.title || ""}
+              value={formData.title}
               onChange={handleInput}
               name="title"
               type="text"
@@ -80,7 +79,7 @@ const ShowTodo = () => {
           <div className="mb-5">
             <label className="block mb-2 text-sm font-medium text-gray-900">Description</label>
             <textarea
-              value={formData?.description || ""}
+              value={formData.description}
               onChange={handleInput}
               name="description"
               rows="4"
@@ -96,7 +95,7 @@ const ShowTodo = () => {
             <select
               onChange={handleInput}
               name="status"
-              value={formData?.status || "Pending"}
+              value={formData.status}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="Pending">Pending</option>
@@ -113,7 +112,7 @@ const ShowTodo = () => {
           </button>
         </form>
       ) : (
-        <>Data not found</>
+        <p className="text-gray-600">Data not found</p>
       )}
     </div>
   );

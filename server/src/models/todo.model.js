@@ -16,8 +16,8 @@ const todoSchema = new mongoose.Schema({
     status: 
     {
         type: String,
-        default: 'pending',
-        enum: ['completed', 'pending'],
+        default: 'Pending',
+        enum: ['Completed', 'Pending'],
         required: true,
     },
     userId:
