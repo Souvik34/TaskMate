@@ -67,9 +67,12 @@ export const signin = async(req, res, next)=>{
             return next(errorHandler(400, "Invalid credentials"))
         }
 
-        // Generate tokens
-        const accessToken = validUser.generateAccessToken();
-        const refreshToken = validUser.generateRefreshToken();
+      // Generate tokens
+const accessToken = validUser.generateAccessToken();
+const refreshToken = validUser.generateRefreshToken();
+
+console.log("Access Token:", accessToken);
+console.log("Refresh Token:", refreshToken);
 
         // Store refresh token in HttpOnly cookie
         res.cookie("refresh_token", refreshToken, {
