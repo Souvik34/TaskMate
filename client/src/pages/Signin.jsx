@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -9,8 +9,8 @@ import { zodToFormik } from "../utils/zodToFormik";
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(""); // ✅ Handle errors
-  const navigate = useNavigate(); // ✅ Navigation hook
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -20,14 +20,33 @@ const Signin = () => {
     validate: zodToFormik(signinSchema),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post("http://localhost:4000/api/v1/auth/signin", values, {
-          withCredentials: true,
-        });
+        const response = await axios.post(
+          "http://localhost:4000/api/v1/auth/signin",
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
 
-        localStorage.setItem("token", response.data.token); // ✅ Store token
-        navigate("/dashboard/home"); // ✅ Redirect after success
+        console.log("🔹 Login Response:", response.data);
+
+        const token = response.data.token || response.data.accessToken;
+        if (!token) {
+          throw new Error("No token received from API");
+        }
+
+        localStorage.setItem("token", token);
+        navigate("/dashboard/home");
       } catch (err) {
-        setError(err.response?.data?.message || "Something went wrong");
+        console.error("🚨 Login Error:", err);
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+        );
       }
     },
   });
@@ -46,7 +65,9 @@ const Signin = () => {
           onBlur={formik.handleBlur}
           value={formik.values[name]}
           className={`mt-1 block w-full px-4 py-2 border ${
-            formik.touched[name] && formik.errors[name] ? "border-red-500 ring-1 ring-red-500" : "border-gray-300"
+            formik.touched[name] && formik.errors[name]
+              ? "border-red-500 ring-1 ring-red-500"
+              : "border-gray-300"
           } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
           autoComplete="off"
         />
@@ -64,7 +85,11 @@ const Signin = () => {
           </div>
         )}
       </div>
-      {formik.touched[name] && formik.errors[name] && <p className="text-red-500 font-semibold text-sm mt-1">{formik.errors[name]}</p>}
+      {formik.touched[name] && formik.errors[name] && (
+        <p className="text-red-500 font-semibold text-sm mt-1">
+          {formik.errors[name]}
+        </p>
+      )}
     </div>
   );
 
@@ -72,19 +97,27 @@ const Signin = () => {
     <section className="bg-gray-50 min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <form onSubmit={formik.handleSubmit} className="space-y-6" noValidate>
-          <h1 className="text-3xl font-bold text-blue-700 text-center">Sign in to TaskMate</h1>
+          <h1 className="text-3xl font-bold text-blue-700 text-center">
+            Sign in to TaskMate
+          </h1>
 
           {error && <p className="text-red-600 text-center font-semibold">{error}</p>}
 
           {renderInput("email", "email", "Email")}
           {renderInput("password", "password", "Password")}
 
-          <button type="submit" className="w-full text-white bg-violet-600 hover:bg-violet-700 font-medium rounded-lg text-base px-5 py-2.5">
+          <button
+            type="submit"
+            className="w-full text-white bg-violet-600 hover:bg-violet-700 font-medium rounded-lg text-base px-5 py-2.5"
+          >
             Sign in
           </button>
 
           <p className="text-base text-center text-gray-500">
-            Don’t have an account yet? <Link to="/signup" className="text-blue-600 hover:underline font-medium">Sign up</Link>
+            Don’t have an account yet?{" "}
+            <Link to="/signup" className="text-blue-600 hover:underline font-medium">
+              Sign up
+            </Link>
           </p>
         </form>
       </div>

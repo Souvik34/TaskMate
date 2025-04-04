@@ -30,7 +30,7 @@ const Todo = ({ props, onDelete }) => {
                 {props.description}
             </p>
             <div className="flex gap-5 items-center">
-                <Link to={`/show-task/${props._id}`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  text-center inline-flex items-center p-2">
+                <Link to={`/dashboard/show-todo/${props._id}`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  text-center inline-flex items-center p-2">
                     <svg
                         className="w-5 h-5"
                         aria-hidden="true"

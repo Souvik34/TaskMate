@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -18,39 +19,46 @@ const HomePage = () => {
   const handleInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const validatedData = todoSchema.parse(formData);
-
+  
       const token = localStorage.getItem("token");
+      console.log("🔹 Token from localStorage:", token); // Debugging step
       if (!token) {
         showToast("error", "You are not logged in. Please sign in first.");
         return;
       }
-
+  
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/todo/create`,
+        "http://localhost:4000/api/v1/todo/create",
         validatedData,
         {
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
         }
       );
-
+  
       setFormData({ title: "", description: "" });
       showToast("success", response.data.message);
-      navigate("/dashboard/todo-list"); // ✅ Navigate to My Todos after adding
     } catch (error) {
-      if (error instanceof ZodError) {
+      console.error("🚨 Full API Error:", error);
+  
+      if (error.response?.status === 403) {
+        showToast("error", "Session expired. Please login again.");
+        localStorage.removeItem("token"); // Clear invalid token
+        navigate("/"); // Use `navigate` instead of `window.location.href`
+      } else if (error instanceof ZodError) {
         setError(getZodError(error.errors));
       } else {
         showToast("error", error.response?.data?.message || "Something went wrong");
       }
     }
   };
-
+  
   return (
     <div className="pt-5">
       <h1 className="text-2xl font-bold mb-5">Add Todo</h1>
