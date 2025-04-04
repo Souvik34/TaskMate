@@ -1,2 +1,2 @@
 export const RouteIndex = '/'
-export const RouteTaskList = '/task-list'
+export const RouteTodoList = '/todo-list'

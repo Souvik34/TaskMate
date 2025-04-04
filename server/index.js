@@ -6,8 +6,14 @@ dotenv.config({
 });
 
 import cookieParser from "cookie-parser";
-
 app.use(cookieParser());
+
+
+import cors from 'cors';
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true 
+}));
 
 
 // Database connection

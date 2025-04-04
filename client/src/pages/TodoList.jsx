@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Badge from "../components/Badge";
 import { Link } from "react-router-dom";
-import Task from "../components/Task";
+import Task from "../components/Todo";
 import { showToast } from "../helper/showToast";
-const TaskListPage = () => {
+const TodoList = () => {
     const [referesh, setReferesh] = useState(false)
     const [tasks, setTasks] = useState()
     useEffect(() => {
@@ -46,4 +46,4 @@ const TaskListPage = () => {
     );
 };
 
-export default TaskListPage;
+export default TodoList;

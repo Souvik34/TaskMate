@@ -2,20 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Badge from './Badge'
 import { Link } from 'react-router-dom'
 
-const Task = ({ props, onDelete }) => {
+const Todo = ({ props, onDelete }) => {
     const [badgecolor, setBadgecolor] = useState()
     useEffect(() => {
         if (props.status === 'Pending') {
             setBadgecolor('blue')
         }
-        else if (props.status === 'Running') {
-            setBadgecolor('yellow')
-        }
+  
         else if (props.status === 'Completed') {
             setBadgecolor('green')
-        }
-        else if (props.status === 'Failed') {
-            setBadgecolor('red')
         }
     }, [props.status])
 
@@ -81,4 +76,4 @@ const Task = ({ props, onDelete }) => {
     )
 }
 
-export default Task
+export default Todo

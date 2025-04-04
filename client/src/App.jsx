@@ -1,10 +1,16 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import TaskListPage from './pages/TaskListPage';
-import ShowTask from './pages/ShowTask';
-import Signin from './pages/Signin';
-import Signup from './pages/Signup';
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
+import TaskListPage from "./pages/TodoList";
+import ShowTask from "./pages/ShowTodo";
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem("token"); // ✅ Check if token exists
+  return isAuthenticated ? children : <Navigate to="/" replace />;
+};
 
 const App = () => {
   return (
@@ -12,15 +18,22 @@ const App = () => {
       <Routes>
         {/* Default: Show Signin */}
         <Route path="/" element={<Signin />} />
-        
-        {/* Public */}
+
+        {/* Public Route */}
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected routes */}
-        <Route path="/dashboard" element={<Layout />}>
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="home" element={<HomePage />} />
           <Route path="task-list" element={<TaskListPage />} />
-          <Route path="show-task/:taskid" element={<ShowTask />} />
+          <Route path="show-task/:todoId" element={<ShowTask />} /> {/* ✅ Updated todoId */}
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { RouteIndex, RouteTaskList } from "../helper/RouteName";
+import { Link, NavLink } from "react-router-dom";
+import { RouteIndex,  RouteTodoList } from "../helper/RouteName";
 
 const Navigation = () => {
  
@@ -18,15 +18,15 @@ const Navigation = () => {
                     isActive ? activeButtonClass : buttonClass
                 }
             >
-                Add Task
+                Add Todo
             </NavLink>
             <NavLink
-                to={RouteTaskList}
+                to={RouteTodoList}
                 className={({ isActive }) =>
                     isActive ? activeButtonClass : buttonClass
                 }
             >
-                My Task
+                My Todo
             </NavLink>
         </div>
     );
