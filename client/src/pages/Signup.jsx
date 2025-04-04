@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
@@ -24,7 +24,7 @@ const Signup = () => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         setErrorMessage(""); 
-        setSuccessMessage(""); 
+        
     
         const { data } = await axios.post(
           "http://localhost:4000/api/v1/auth/signup", 
