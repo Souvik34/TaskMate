@@ -12,7 +12,7 @@ const ShowTodo = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    status: "Pending", // ✅ Use correct case
+    status: "Pending",
   });
   const [err, setError] = useState(null);
 
@@ -27,7 +27,7 @@ const ShowTodo = () => {
         const { data } = await axios.get(`/todo/show/${todoId}`);
         console.log("📦 Full Todo API Response:", data);
         setApiData(data);
-        setFormData(data.todo); // backend must return: { todo: {title, desc, status} }
+        setFormData(data.todo);
       } catch (error) {
         showToast("error", error.response?.data?.message || "Failed to fetch todo");
       }
@@ -42,6 +42,18 @@ const ShowTodo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
+    // 🚫 Prevent updating if the status is unchanged
+    if (
+      apiData?.todo?.status === formData.status &&
+      apiData?.todo?.title === formData.title &&
+      apiData?.todo?.description === formData.description
+    ) {
+      showToast("error", "No changes made. Please modify the fields before submitting.");
+      return;
+    }
+
     try {
       const validatedData = todoSchema.parse(formData);
       const { data } = await axios.put(`/todo/update/${todoId}`, validatedData);
