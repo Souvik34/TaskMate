@@ -39,7 +39,7 @@ const Navbar = () => {
       <div className="flex items-center gap-4">
         <div className="text-right">
           <p className="font-semibold text-base">{firstName}</p>
-          <p className="text-xs opacity-70">Welcome back</p>
+      
         </div>
 
         <img
