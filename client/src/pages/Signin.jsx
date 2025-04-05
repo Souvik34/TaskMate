@@ -57,7 +57,7 @@ const Signin = () => {
           },
           willClose: () => {
             clearInterval(timerInterval);
-            navigate("/dashboard/home");
+            navigate("/dashboard/todo-list");
           },
         });
       } catch (err) {

@@ -1,3 +1,3 @@
-export const RouteIndex = "/dashboard/home";
+export const RouteIndex = "/dashboard/add-todo";
 export const RouteTodoList = "/dashboard/todo-list";
 

@@ -27,7 +27,7 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route path="home" element={<HomePage />} />
+          <Route path="add-todo" element={<HomePage />} />
           <Route path="todo-list" element={<TodoList />} />
           <Route path="show-todo/:todoId" element={<ShowTodo />} />
         </Route>

@@ -19,9 +19,9 @@ const Todo = ({ props, onDelete }) => {
 
   const formattedDate = props.createdAt
     ? new Date(props.createdAt).toLocaleString('en-IN', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
     : 'Date not available';
 
   const isCompleted = props.status === 'Completed';
@@ -66,7 +66,7 @@ const Todo = ({ props, onDelete }) => {
       <div className="flex gap-5 items-center">
         <Link
           to={`/dashboard/show-todo/${props._id}`}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center p-2"
+          className="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm text-center inline-flex items-center p-2"
         >
           <svg
             className="w-5 h-5"
@@ -77,16 +77,14 @@ const Todo = ({ props, onDelete }) => {
           >
             <path
               stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               strokeWidth="2"
-              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
-            />
-            <path
-              stroke="currentColor"
-              strokeWidth="2"
-              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              d="M16.862 3.487a2.06 2.06 0 0 1 2.915 2.915L7.5 18.679 3 20l1.321-4.5 12.541-12.013Z"
             />
           </svg>
         </Link>
+
 
         <button
           onClick={handleDelete}
