@@ -27,7 +27,7 @@ const useTokenExpiryWatcher = () => {
           allowOutsideClick: false,
           willClose: () => {
             localStorage.removeItem("token");
-            navigate("/signin");
+            navigate("/");
           },
         });
       } else {
@@ -42,7 +42,7 @@ const useTokenExpiryWatcher = () => {
             allowOutsideClick: false,
             willClose: () => {
               localStorage.removeItem("token");
-              navigate("/signin");
+              navigate("/");
             },
           });
         }, timeUntilExpiry - 3000);
