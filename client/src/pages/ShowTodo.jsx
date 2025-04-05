@@ -25,7 +25,6 @@ const ShowTodo = () => {
     const getTodo = async () => {
       try {
         const { data } = await axios.get(`/todo/show/${todoId}`);
-        console.log(" Full Todo API Response:", data);
         setApiData(data);
         setFormData(data.todo);
       } catch (error) {
@@ -44,7 +43,6 @@ const ShowTodo = () => {
     e.preventDefault();
     setError(null);
 
-    // Prevent updating if the status is unchanged
     if (
       apiData?.todo?.status === formData.status &&
       apiData?.todo?.title === formData.title &&
@@ -68,64 +66,75 @@ const ShowTodo = () => {
   };
 
   return (
-    <div className="pt-5">
-      <h1 className="text-2xl font-bold mb-5">Todo Details</h1>
-      {apiData?.todo ? (
-        <form onSubmit={handleSubmit}>
-          {/* Title */}
-          <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900">Title</label>
-            <input
-              value={formData.title}
-              onChange={handleInput}
-              name="title"
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Todo title"
-              required
-            />
-            {err?.title && <span className="text-red-500 text-sm">{err.title}</span>}
-          </div>
+    <div className="pt-6 pb-12 px-4 max-w-3xl mx-auto">
+      <div className="bg-white shadow-xl rounded-xl p-6 sm:p-8 transition-all duration-300">
+        <h1 className="text-3xl font-bold text-blue-700 mb-6 border-b pb-2">📝 Todo Details</h1>
 
-          {/* Description */}
-          <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-            <textarea
-              value={formData.description}
-              onChange={handleInput}
-              name="description"
-              rows="4"
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Todo description..."
-            ></textarea>
-            {err?.description && <span className="text-red-500 text-sm">{err.description}</span>}
-          </div>
+        {apiData?.todo ? (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+              <input
+                value={formData.title}
+                onChange={handleInput}
+                name="title"
+                type="text"
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  err?.title ? "border-red-500" : "border-gray-300"
+                } focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-200`}
+                placeholder="Enter todo title"
+              />
+              {err?.title && <p className="text-red-500 text-sm mt-1">{err.title}</p>}
+            </div>
 
-          {/* Status */}
-          <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900">Status</label>
-            <select
-              onChange={handleInput}
-              name="status"
-              value={formData.status}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Completed">Completed</option>
-            </select>
-            {err?.status && <span className="text-red-500 text-sm">{err.status}</span>}
-          </div>
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+              <textarea
+                value={formData.description}
+                onChange={handleInput}
+                name="description"
+                rows="4"
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  err?.description ? "border-red-500" : "border-gray-300"
+                } focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-200`}
+                placeholder="Write your description here..."
+              ></textarea>
+              {err?.description && <p className="text-red-500 text-sm mt-1">{err.description}</p>}
+            </div>
 
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          >
-            Submit
-          </button>
-        </form>
-      ) : (
-        <p className="text-gray-600">Data not found</p>
-      )}
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Status</label>
+              <select
+                onChange={handleInput}
+                name="status"
+                value={formData.status}
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  err?.status ? "border-red-500" : "border-gray-300"
+                } focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-200`}
+              >
+                <option value="Pending">⏳ Pending</option>
+                <option value="Completed">✅ Completed</option>
+              </select>
+              {err?.status && <p className="text-red-500 text-sm mt-1">{err.status}</p>}
+            </div>
+
+            {/* Submit */}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        ) : (
+          <p className="text-gray-500 text-center mt-10">🚫 Todo data not found</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { showToast } from "../helper/showToast";
 import Todo from "../components/Todo";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -69,19 +70,21 @@ const TodoList = () => {
   });
 
   return (
-    <div className="pt-5">
-      <h1 className="text-2xl font-bold mb-5">My Todos</h1>
+    <div className="pt-6">
+      <h1 className="text-3xl font-bold mb-6 text-center text-violet-700 drop-shadow">
+        📝 My Todos
+      </h1>
 
       {/* Filter Buttons */}
-      <div className="mb-5 flex gap-3">
+      <div className="mb-6 flex justify-center gap-4">
         {["All", "Pending", "Completed"].map((type) => (
           <button
             key={type}
             onClick={() => setFilter(type)}
-            className={`px-4 py-2 rounded-md border ${
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold border shadow transition-all duration-300 hover:scale-105 ${
               filter === type
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-800"
+                ? "bg-violet-600 text-white border-violet-600 shadow-md"
+                : "bg-white text-violet-600 border-violet-300 hover:bg-violet-100"
             }`}
           >
             {type}
@@ -90,15 +93,27 @@ const TodoList = () => {
       </div>
 
       {/* Todo List */}
-      {loading ? (
-        <p>Loading...</p>
-      ) : filteredTodos.length > 0 ? (
-        filteredTodos.map((todo) => (
-          <Todo key={todo._id} props={todo} onDelete={deleteTodo} />
-        ))
-      ) : (
-        <p>No Todos Available.</p>
-      )}
+      <div className="space-y-4">
+        {loading ? (
+          <p className="text-center text-gray-500">Loading...</p>
+        ) : filteredTodos.length > 0 ? (
+          <AnimatePresence>
+            {filteredTodos.map((todo, index) => (
+              <motion.div
+                key={todo._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+              >
+                <Todo props={todo} onDelete={deleteTodo} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        ) : (
+          <p className="text-center text-gray-400">No Todos Available </p>
+        )}
+      </div>
     </div>
   );
 };
