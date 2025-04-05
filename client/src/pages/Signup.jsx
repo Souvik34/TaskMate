@@ -52,7 +52,7 @@ const Signup = () => {
           },
           willClose: () => {
             clearInterval(timerInterval);
-            navigate("/");
+            navigate("/signin");
           },
         });
       } catch (error) {

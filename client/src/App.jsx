@@ -5,18 +5,20 @@ import TodoList from "./pages/TodoList";
 import ShowTodo from "./pages/ShowTodo";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import LandingPage from "./pages/LandingPage"; 
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("token");
-  return isAuthenticated ? children : <Navigate to="/" replace />;
+  return isAuthenticated ? children : <Navigate to="/signin" replace />;
 };
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Signin />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
 
         <Route

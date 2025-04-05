@@ -34,7 +34,7 @@ const Navbar = () => {
       transition={{ duration: 0.4 }}
       className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 shadow-md border-b border-white/20 backdrop-blur-md bg-gradient-to-r from-violet-200/40 via-blue-200/40 to-pink-200/40"
     >
-    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-600 via-blue-500 to-pink-500 text-transparent bg-clip-text font-serif">
+    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-600 via-blue-500 to-pink-500 text-transparent bg-clip-text font-sans">
   TaskMate
 </h1>
 
