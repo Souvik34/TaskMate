@@ -32,14 +32,13 @@ const Navbar = () => {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="flex items-center justify-between bg-violet-700 text-white px-6 py-4 shadow-md"
+      className="flex items-center justify-between px-6 py-4 shadow-md border-b bg-gradient-to-r from-violet-100 via-blue-100 to-pink-100 text-gray-800 border-gray-200"
     >
-      <h1 className="text-2xl font-bold tracking-wide">🚀 TaskMate</h1>
+      <h1 className="text-2xl font-bold tracking-wide">TaskMate</h1>
 
       <div className="flex items-center gap-4">
-        <div className="text-right">
+        <div className="text-right hidden sm:block">
           <p className="font-semibold text-base">{firstName}</p>
-      
         </div>
 
         <img
@@ -50,7 +49,7 @@ const Navbar = () => {
 
         <button
           onClick={handleSignOut}
-          className="bg-white text-violet-700 font-medium px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition duration-200"
+          className="bg-violet-600 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-violet-700 transition duration-200"
         >
           Sign out
         </button>
