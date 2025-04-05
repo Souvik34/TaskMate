@@ -1,4 +1,3 @@
-
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
@@ -6,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { signupSchema } from "../schemas/validationSchema";
 import { zodToFormik } from "../utils/zodToFormik";
 import axios from "axios";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,17 +23,16 @@ const Signup = () => {
     validate: zodToFormik(signupSchema),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        setErrorMessage(""); 
-        
-    
+        setErrorMessage("");
+
         const { data } = await axios.post(
-          "http://localhost:4000/api/v1/auth/signup", 
+          "http://localhost:4000/api/v1/auth/signup",
           values,
           { withCredentials: true }
         );
-    
+
         console.log("Signup Success:", data);
-    
+
         let timerInterval;
         Swal.fire({
           title: "Signup Successful!",
@@ -53,31 +52,29 @@ const Signup = () => {
           },
           willClose: () => {
             clearInterval(timerInterval);
-            navigate("/"); 
+            navigate("/");
           },
         });
-    
       } catch (error) {
         console.error("Signup Error:", error.response?.data || error.message);
-    
+
         Swal.fire({
           title: "Signup Failed",
           text: error.response?.data?.message || "Something went wrong.",
-          icon: "error", 
+          icon: "error",
           confirmButtonColor: "#d33",
         });
-    
+
         setErrorMessage(error.response?.data?.message || "Signup failed. Please try again.");
       } finally {
         setSubmitting(false);
       }
-    }
-    
+    },
   });
 
   const renderInput = (name, type, label) => (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+      <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-1">
         {label}
       </label>
       <div className="relative">
@@ -88,11 +85,11 @@ const Signup = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values[name]}
-          className={`mt-1 block w-full px-4 py-2 border ${
+          className={`block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none transition duration-150 ${
             formik.touched[name] && formik.errors[name]
               ? "border-red-500 ring-1 ring-red-500"
-              : "border-gray-300"
-          } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
+              : "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          }`}
         />
         {type === "password" && (
           <div
@@ -109,22 +106,26 @@ const Signup = () => {
         )}
       </div>
       {formik.touched[name] && formik.errors[name] && (
-        <p className="text-red-500 text-sm font-semibold mt-1">
-          {formik.errors[name]}
-        </p>
+        <p className="text-red-500 text-sm font-semibold mt-1">{formik.errors[name]}</p>
       )}
     </div>
   );
 
   return (
-    <section className="bg-gray-50 min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+    <section className="bg-gradient-to-br from-violet-100 to-indigo-200 min-h-screen flex items-center justify-center px-4">
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8"
+      >
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-blue-700">Create an account</h1>
+          <h1 className="text-3xl font-extrabold text-violet-700 tracking-tight">Create an account</h1>
+          <p className="text-sm text-gray-500 mt-1">Start your journey with TaskMate 🚀</p>
         </div>
 
         {errorMessage && (
-          <p className="text-red-500 font-semibold text-sm text-center">
+          <p className="text-red-500 font-semibold text-sm text-center mb-3">
             {errorMessage}
           </p>
         )}
@@ -135,22 +136,23 @@ const Signup = () => {
           {renderInput("password", "password", "Password")}
           {renderInput("confirmPassword", "password", "Confirm Password")}
 
-          <button
+          <motion.button
+            whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={formik.isSubmitting}
-            className="w-full text-white bg-violet-600 hover:bg-violet-800 font-semibold rounded-lg text-base px-5 py-2.5"
+            className="w-full text-white bg-violet-600 hover:bg-violet-700 active:scale-95 font-semibold rounded-lg text-base px-5 py-2.5 transition-all duration-200 shadow-sm"
           >
             {formik.isSubmitting ? "Creating account..." : "Create account"}
-          </button>
+          </motion.button>
 
-          <p className="text-base text-center text-gray-500">
+          <p className="text-sm text-center text-gray-600">
             Already have an account?{" "}
-            <Link to="/" className="text-blue-600 hover:underline font-medium">
+            <Link to="/" className="text-violet-600 hover:underline font-medium">
               Sign in
             </Link>
           </p>
         </form>
-      </div>
+      </motion.div>
     </section>
   );
 };
