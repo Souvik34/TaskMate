@@ -19,7 +19,8 @@ With a clean and intuitive user interface, TaskMate lets you keep track of your 
 
 ## 📸 Screenshots
 
-> _Add your UI screenshots here for visual representation of the app._
+![image](https://github.com/user-attachments/assets/50b61751-fa47-4f1e-b72f-68778b3fe522)
+
 
 ---
 
