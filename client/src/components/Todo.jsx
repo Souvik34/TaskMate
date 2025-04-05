@@ -17,7 +17,6 @@ const Todo = ({ props, onDelete }) => {
     await onDelete(props._id);
   };
 
-  // Format createdAt date
   const formattedDate = props.createdAt
     ? new Date(props.createdAt).toLocaleString('en-IN', {
         dateStyle: 'medium',
@@ -25,18 +24,45 @@ const Todo = ({ props, onDelete }) => {
       })
     : 'Date not available';
 
+  const isCompleted = props.status === 'Completed';
+
   return (
     <div className="border p-3 rounded-md mb-5">
       <h3 className="text-lg font-semibold flex justify-between items-center">
-        <span>
-          {props.title}
-        </span>
+        <div className="flex items-center gap-3">
+          {/* Green Square Checkbox Icon for Completed */}
+          {isCompleted && (
+            <div className="w-6 h-6 bg-green-600 text-white flex items-center justify-center rounded-sm">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          )}
+          <span className={`${isCompleted ? 'line-through text-gray-500' : ''}`}>
+            {props.title}
+          </span>
+        </div>
         <Badge props={{ color: badgecolor, text: props.status }} />
       </h3>
-      <p className="text-sm text-gray-500 mb-2">🗓️ {formattedDate}</p>
-      <p className="line-clamp-2 mb-3">
+
+      <p className={`text-sm mb-2 ${isCompleted ? 'line-through text-gray-400' : 'text-gray-500'}`}>
+        🗓️ {formattedDate}
+      </p>
+
+      <p className={`line-clamp-2 mb-3 ${isCompleted ? 'line-through text-gray-500' : ''}`}>
         {props.description}
       </p>
+
       <div className="flex gap-5 items-center">
         <Link
           to={`/dashboard/show-todo/${props._id}`}
@@ -46,8 +72,6 @@ const Todo = ({ props, onDelete }) => {
             className="w-5 h-5"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             fill="none"
             viewBox="0 0 24 24"
           >
@@ -63,6 +87,7 @@ const Todo = ({ props, onDelete }) => {
             />
           </svg>
         </Link>
+
         <button
           onClick={handleDelete}
           className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm text-center inline-flex items-center p-2"
@@ -71,8 +96,6 @@ const Todo = ({ props, onDelete }) => {
             className="w-5 h-5"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             fill="none"
             viewBox="0 0 24 24"
           >
