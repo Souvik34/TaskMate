@@ -7,7 +7,7 @@ const Todo = ({ props, onDelete }) => {
 
   useEffect(() => {
     if (props.status === "Pending") {
-      setBadgecolor("yellow"); 
+      setBadgecolor("yellow");
     } else if (props.status === "Completed") {
       setBadgecolor("green");
     }
@@ -27,9 +27,10 @@ const Todo = ({ props, onDelete }) => {
   const isCompleted = props.status === "Completed";
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-md hover:shadow-lg transition duration-300 p-5 space-y-3">
+    <div className="rounded-xl border border-gray-200 bg-white shadow-md hover:shadow-lg transition duration-300 p-5 space-y-4">
       {/* Title Row */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start flex-wrap gap-4">
+        {/* Left side: Title */}
         <div className="flex items-center gap-3">
           {isCompleted && (
             <div className="w-6 h-6 bg-green-600 text-white flex items-center justify-center rounded-sm shadow">
@@ -56,17 +57,15 @@ const Todo = ({ props, onDelete }) => {
             {props.title}
           </span>
         </div>
-        <Badge props={{ color: badgecolor, text: props.status }} />
-      </div>
 
-      {/* Date */}
-      <p
-        className={`text-sm ${
-          isCompleted ? "text-gray-400 line-through" : "text-gray-500"
-        }`}
-      >
-        🗓️ {formattedDate}
-      </p>
+        {/* Right side: Date and Status */}
+        <div className="flex flex-col items-end gap-1">
+          <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
+            {formattedDate}
+          </span>
+          <Badge props={{ color: badgecolor, text: props.status }} />
+        </div>
+      </div>
 
       {/* Description */}
       <p
