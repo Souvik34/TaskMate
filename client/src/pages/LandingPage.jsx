@@ -43,7 +43,7 @@ const LandingPage = () => {
 
 
             <div className="relative z-10 text-center mt-10">
-                <h1 className="text-6xl sm:text-7xl font-bold tracking-wider bg-gradient-to-r from-violet-600 via-blue-500 to-pink-500 text-transparent bg-clip-text font-sans drop-shadow-[0_0_25px_#d982ff]">
+                <h1 className="text-6xl sm:text-9xl font-medium tracking-wider bg-gradient-to-r from-violet-600 via-blue-500 to-pink-500 text-transparent bg-clip-text font-sans drop-shadow-[0_0_25px_#d982ff]">
                     TaskMate
                 </h1>
 
