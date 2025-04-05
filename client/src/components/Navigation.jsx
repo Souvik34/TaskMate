@@ -5,15 +5,15 @@ import { motion } from "framer-motion";
 
 const Navigation = () => {
   const baseButton =
-    "py-2.5 px-5 text-sm font-medium rounded-lg border transition-all duration-200 shadow-sm";
+    "py-3 px-6 text-sm font-semibold rounded-xl border transition-all duration-200 shadow-md backdrop-blur-md";
 
   const inactiveButton =
     baseButton +
-    " text-gray-900 bg-white border-gray-300 hover:bg-gray-100 hover:text-blue-700 focus:ring-4 focus:ring-gray-200";
+    " text-gray-800 bg-white/70 border-gray-300 hover:bg-gray-100 hover:text-blue-700 focus:ring-2 focus:ring-blue-200";
 
   const activeButton =
     baseButton +
-    " text-white bg-blue-700 border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300";
+    " text-white bg-gradient-to-r from-blue-600 to-violet-600 border-blue-700 hover:from-blue-700 hover:to-violet-700 focus:ring-2 focus:ring-blue-300";
 
   return (
     <motion.div

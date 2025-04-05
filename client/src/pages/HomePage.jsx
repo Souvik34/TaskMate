@@ -23,7 +23,7 @@ const HomePage = () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        showToast("error", "🔒 You are not logged in. Please sign in first.");
+        showToast("error", " You are not logged in. Please sign in first.");
         return;
       }
 
@@ -40,16 +40,16 @@ const HomePage = () => {
 
       setFormData({ title: "", description: "", status: "Pending" });
       setError(null);
-      showToast("success", `✅ ${response.data.message}`);
+      showToast("success", `${response.data.message}`);
     } catch (error) {
       if (error.response?.status === 403) {
-        showToast("error", "⏰ Session expired. Please login again.");
+        showToast("error", " Session expired. Please login again.");
         localStorage.removeItem("token");
         navigate("/");
       } else if (error instanceof ZodError) {
         setError(getZodError(error.errors));
       } else {
-        showToast("error", `❌ ${error.response?.data?.message || "Something went wrong"}`);
+        showToast("error", ` ${error.response?.data?.message || "Something went wrong"}`);
       }
     }
   };

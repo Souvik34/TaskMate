@@ -120,7 +120,7 @@ const Signup = () => {
         className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8"
       >
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-extrabold text-violet-700 tracking-tight">Create an account</h1>
+          <h1 className="text-3xl font-bold text-violet-700 tracking-tight">Create an account</h1>
           <p className="text-sm text-gray-500 mt-1">Start your journey with TaskMate 🚀</p>
         </div>
 

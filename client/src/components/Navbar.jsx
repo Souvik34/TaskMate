@@ -32,13 +32,16 @@ const Navbar = () => {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="flex items-center justify-between px-6 py-4 shadow-md border-b bg-gradient-to-r from-violet-100 via-blue-100 to-pink-100 text-gray-800 border-gray-200"
+      className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 shadow-md border-b border-white/20 backdrop-blur-md bg-gradient-to-r from-violet-200/40 via-blue-200/40 to-pink-200/40"
     >
-      <h1 className="text-2xl font-bold tracking-wide">TaskMate</h1>
+    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-600 via-blue-500 to-pink-500 text-transparent bg-clip-text font-serif">
+  TaskMate
+</h1>
+
 
       <div className="flex items-center gap-4">
         <div className="text-right hidden sm:block">
-          <p className="font-semibold text-base">{firstName}</p>
+          <p className="font-bold text-base text-gray-800">{firstName}</p>
         </div>
 
         <img

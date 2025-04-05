@@ -124,7 +124,7 @@ const Signin = () => {
           }}
           noValidate
         >
-          <h1 className="text-3xl font-extrabold text-center text-violet-700">
+          <h1 className="text-3xl font-bold text-center text-violet-700">
             Sign in to TaskMate
           </h1>
 
@@ -150,7 +150,6 @@ const Signin = () => {
         </form>
       </div>
 
-      {/* Simple fade-in and slide-up animations using inline keyframes */}
       <style>
         {`
           @keyframes fade-in {
