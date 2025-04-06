@@ -111,7 +111,7 @@ const TodoList = () => {
             ))}
           </AnimatePresence>
         ) : (
-          <p className="text-center text-gray-400">No Todos Available </p>
+          <p className="text-center font-bold text-xl text-gray-400">No Todos Available! </p>
         )}
       </div>
     </div>
