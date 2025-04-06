@@ -11,7 +11,7 @@ app.use(cookieParser());
 
 import cors from 'cors';
 app.use(cors({
-    origin: 'http://localhost:5173', 
+    origin: process.env.FRONTEND_URL, 
     credentials: true 
 }));
 
@@ -22,10 +22,6 @@ connectDB();
 app.use(express.json())
 
 // PORT
-const PORT = process.env.PORT || 4000
-app.listen(PORT, () => {
-    console.log(`Server running at:`, PORT)
-})
 
 
 
@@ -51,5 +47,15 @@ app.use((err, req, res, next) =>
             statusCode,
             message,
         })
-    
+        
+      
     })
+    import serverless from 'serverless-http';
+    if (process.env.NODE_ENV !== 'production') {
+        const PORT = process.env.PORT || 4000;
+        app.listen(PORT, () => {
+            console.log(`Server running at:`, PORT);
+        });
+    }
+    
+    export default serverless(app);
