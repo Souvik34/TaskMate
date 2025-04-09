@@ -23,7 +23,13 @@ app.use(express.json())
 
 // PORT
 
-
+import serverless from 'serverless-http';
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => {
+        console.log(`Server running at:`, PORT);
+    });
+}
 
 // import routes
 
@@ -50,12 +56,6 @@ app.use((err, req, res, next) =>
         
       
     })
-    import serverless from 'serverless-http';
-    if (process.env.NODE_ENV !== 'production') {
-        const PORT = process.env.PORT || 4000;
-        app.listen(PORT, () => {
-            console.log(`Server running at:`, PORT);
-        });
-    }
+
     
     export default serverless(app);
