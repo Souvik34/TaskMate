@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Todo = ({ props, onDelete }) => {
   const [badgecolor, setBadgecolor] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (props.status === "Pending") {
@@ -15,6 +16,7 @@ const Todo = ({ props, onDelete }) => {
 
   const handleDelete = async () => {
     await onDelete(props._id);
+    setShowModal(false);
   };
 
   const formattedDate = props.createdAt
@@ -27,98 +29,152 @@ const Todo = ({ props, onDelete }) => {
   const isCompleted = props.status === "Completed";
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-md hover:shadow-lg transition duration-300 p-5 space-y-4">
-      {/* Title Row */}
-      <div className="flex justify-between items-start flex-wrap gap-4">
-        {/* Left side: Title */}
-        <div className="flex items-center gap-3">
-          {isCompleted && (
-            <div className="w-6 h-6 bg-green-600 text-white flex items-center justify-center rounded-sm shadow">
+    <>
+      <div className="rounded-xl border border-gray-200 bg-white shadow-md hover:shadow-lg transition duration-300 p-5 space-y-4">
+        {/* Title Row */}
+        <div className="flex justify-between items-start flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            {isCompleted && (
+              <div className="w-6 h-6 bg-green-600 text-white flex items-center justify-center rounded-sm shadow">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            )}
+            <span
+              className={`text-lg font-semibold ${
+                isCompleted ? "line-through text-gray-500" : "text-gray-800"
+              }`}
+            >
+              {props.title}
+            </span>
+          </div>
+
+          <div className="flex flex-col items-end gap-1">
+            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
+              {formattedDate}
+            </span>
+            <Badge props={{ color: badgecolor, text: props.status }} />
+          </div>
+        </div>
+
+        {/* Description */}
+        <p
+          className={`text-sm line-clamp-2 ${
+            isCompleted ? "line-through text-gray-400" : "text-gray-700"
+          }`}
+        >
+          {props.description}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex gap-4 pt-2">
+          {!isCompleted && (
+            <Link
+              to={`/dashboard/show-todo/${props._id}`}
+              className="flex items-center gap-2 text-sm font-medium bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow transition"
+            >
               <svg
                 className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="3"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M5 13l4 4L19 7"
+                  d="M16.862 3.487a2.06 2.06 0 0 1 2.915 2.915L7.5 18.679 3 20l1.321-4.5 12.541-12.013Z"
                 />
               </svg>
-            </div>
+              Edit
+            </Link>
           )}
-          <span
-            className={`text-lg font-semibold ${
-              isCompleted ? "line-through text-gray-500" : "text-gray-800"
-            }`}
-          >
-            {props.title}
-          </span>
-        </div>
 
-        {/* Right side: Date and Status */}
-        <div className="flex flex-col items-end gap-1">
-          <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
-            {formattedDate}
-          </span>
-          <Badge props={{ color: badgecolor, text: props.status }} />
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 text-sm font-medium bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow transition"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+              />
+            </svg>
+            Delete
+          </button>
         </div>
       </div>
 
-      {/* Description */}
-      <p
-        className={`text-sm line-clamp-2 ${
-          isCompleted ? "line-through text-gray-400" : "text-gray-700"
-        }`}
-      >
-        {props.description}
+      {/* Delete Confirmation Modal  */}
+      {showModal && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm transition-all duration-300">
+    <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center space-y-6 animate-fade-in-up relative">
+      {/* Exclamation Icon */}
+      <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-yellow-100 border-4 border-yellow-300 shadow-md">
+        <span className="text-red-600 text-4xl font-bold">!</span>
+      </div>
+
+      <h2 className="text-2xl font-bold text-gray-800">Are you sure?</h2>
+      <p className="text-xl font-medium text-gray-600">
+        Do you really want to delete this task? This action cannot be undone.
       </p>
 
-      {/* Action Buttons */}
-      <div className="flex gap-4 pt-2">
-        <Link
-          to={`/dashboard/show-todo/${props._id}`}
-          className="flex items-center gap-2 text-sm font-medium bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow transition"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16.862 3.487a2.06 2.06 0 0 1 2.915 2.915L7.5 18.679 3 20l1.321-4.5 12.541-12.013Z"
-            />
-          </svg>
-          Edit
-        </Link>
-
+      <div className="flex justify-center gap-4 pt-4">
         <button
           onClick={handleDelete}
-          className="flex items-center gap-2 text-sm font-medium bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow transition"
+          className="px-5 py-2.5 bg-red-500 font-bold text-white rounded-lg shadow-md hover:bg-red-600 hover:scale-105 active:scale-95 transition-transform"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-            />
-          </svg>
-          Delete
+          Yes, Delete
+        </button>
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-5 py-2.5 bg-gray-200 font-bold text-gray-800 rounded-lg shadow-md hover:bg-gray-300 hover:scale-105 active:scale-95 transition-transform"
+        >
+          Cancel
         </button>
       </div>
     </div>
+
+    <style>
+      {`
+        @keyframes fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fade-in-up 0.4s ease-out both;
+        }
+      `}
+    </style>
+  </div>
+)}
+
+    </>
   );
 };
 

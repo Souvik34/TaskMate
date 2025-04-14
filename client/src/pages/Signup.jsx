@@ -26,10 +26,11 @@ const Signup = () => {
         setErrorMessage("");
 
         const { data } = await axios.post(
-          "http://localhost:4000/api/v1/auth/signup",
+          `${import.meta.env.VITE_API_BASE_URL}/auth/signup`,
           values,
           { withCredentials: true }
         );
+        
 
         console.log("Signup Success:", data);
 
